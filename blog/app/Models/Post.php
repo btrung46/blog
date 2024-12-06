@@ -5,13 +5,23 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $casts = [
         'published_at' => 'datetime',
+    ];
+    protected $fillable = [
+        'title',    
+        'slug',
+        'body',
+        'image',
+        'published_at',
+        'featured',
     ];
     protected function scopePublished($query){
         $query->where("published_at","<=" , Carbon::now());
@@ -19,10 +29,12 @@ class Post extends Model
     protected function scopeFeatured($query){
         $query->where("featured",true);
     }
-    protected function author() {
+    public function author() {
         return $this->belongsTo(User::class,"user_id");
     }
-
+    public function categories(){
+        return $this->belongsToMany(Category::class);
+    }
     public function getExcerpt()
     {
         return str::limit(strip_tags($this->body), 150);
