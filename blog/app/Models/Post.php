@@ -17,6 +17,7 @@ class Post extends Model
         'published_at' => 'datetime',
     ];
     protected $fillable = [
+        'user_id',
         'title',    
         'slug',
         'body',
@@ -61,5 +62,8 @@ class Post extends Model
     }
     public function likes() {
         return $this->belongsToMany(User::class,'post_like');   
+    }
+    public function comments() {
+        return $this->hasMany(Comment::class);
     }
 }

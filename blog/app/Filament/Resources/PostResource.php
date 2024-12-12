@@ -43,7 +43,6 @@ class PostResource extends Resource
                                 if ($operation === 'edit') {
                                     return;
                                 }
-
                                 $set('slug', Str::slug($state));
                             }),
                         TextInput::make('slug')->required()->minLength(1)->unique(ignoreRecord: true)->maxLength(150),
@@ -57,7 +56,7 @@ class PostResource extends Resource
                         FileUpload::make('image')->image()->directory('posts/thumbnails'),
                         DateTimePicker::make('published_at')->nullable(),
                         Checkbox::make('featured'),
-                        Select::make('author')
+                        Select::make('user_id')
                             ->relationship('author', 'name')
                             ->searchable()
                             ->required(),
