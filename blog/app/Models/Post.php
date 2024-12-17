@@ -60,6 +60,10 @@ class Post extends Model
             $query->where('slug', $category);
         });
     }
+    public function scopeSearch($query, $search ='')
+    {
+        $query->where('title','like',"%{$search}%");
+    }
     public function likes() {
         return $this->belongsToMany(User::class,'post_like');   
     }

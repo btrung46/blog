@@ -36,11 +36,11 @@ class PostList extends Component
     #[Computed()]
     public function posts(){
         return Post::published()
-        ->orderBy("published_at",$this->sort)
         ->when($this->activeCategory, function ($query) {
             $query->withCategory($this->category);
         })
-        ->where('title','like',"%{$this->search}%")
+        ->search($this->search) 
+        ->orderBy("published_at",$this->sort)
         ->simplePaginate(3);
     }
     #[Computed()]
